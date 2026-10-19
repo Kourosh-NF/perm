@@ -26,13 +26,13 @@ One script. No dependencies beyond standard GNU/Linux tools. Targets Ubuntu/Linu
 <p align="center"><img src="assets/header-questions.svg" alt="What it answers" width="520"/></p>
 
 <p align="center">
-  <img src="assets/questions.svg" alt="perm answers three questions: what permissions a file has, what changed since last time, and why a user cannot access a file" width="720"/>
+  <img src="assets/questions.svg" alt="perm answers three questions: what permissions a file has, what changed since last time, and why a user cannot access a file" width="780"/>
 </p>
 
 <p align="center"><img src="assets/header-features.svg" alt="Features" width="520"/></p>
 
 <p align="center">
-  <img src="assets/features.svg" alt="Features: analysis and explanation, comparison, drift detection with baselines, and effective access analysis with --why" width="720"/>
+  <img src="assets/features.svg" alt="Features: analysis and explanation, comparison, drift detection with baselines, and effective access analysis with --why" width="780"/>
 </p>
 
 <p align="center"><img src="assets/header-install.svg" alt="Installation" width="520"/></p>
@@ -52,6 +52,13 @@ sudo install -m 755 perm /usr/local/bin/perm
 
 <p align="center"><img src="assets/header-usage.svg" alt="Usage" width="520"/></p>
 
+<p align="center">
+  <img src="assets/usage-synopsis.svg" alt="Command synopsis of perm: analyze, quiet, compare, explain, baseline, check, scan, list, remove and why" width="720"/>
+</p>
+
+<details>
+<summary>Copy the synopsis as plain text</summary>
+
 ```text
 perm [OPTIONS] PATH
 perm --quiet PATH
@@ -66,7 +73,9 @@ perm --remove PATH
 perm --why [--json] USER ACTION PATH
 ```
 
-**Analyze and explain**
+</details>
+
+<img src="assets/label-analyze.svg" alt="Analyze and explain" width="100%"/>
 
 ```bash
 perm /etc/passwd
@@ -79,7 +88,7 @@ perm --explain 755
 perm --explain 6755
 ```
 
-**Compare two files**
+<img src="assets/label-compare.svg" alt="Compare two files" width="100%"/>
 
 ```bash
 perm --compare file1 file2
@@ -88,7 +97,7 @@ perm --compare --special file1 file2
 perm --compare --diff file1 file2   # only the real differences
 ```
 
-**Detect drift with baselines**
+<img src="assets/label-drift.svg" alt="Detect drift with baselines" width="100%"/>
 
 ```bash
 perm --baseline /usr/bin/sudo
@@ -102,7 +111,7 @@ perm --list
 perm --remove /usr/bin/sudo
 ```
 
-**Why can (or can't) a user access a file?**
+<img src="assets/label-why.svg" alt="Why can (or can't) a user access a file?" width="100%"/>
 
 ```bash
 perm --why bob read /srv/app/data.txt
@@ -114,21 +123,21 @@ perm --why 1001 w /var/www/index.html      # numeric UID and short action work t
 <p align="center"><img src="assets/header-output.svg" alt="Sample Output" width="520"/></p>
 
 <p align="center">
-  <img src="assets/demo-explain.svg" alt="Terminal: perm --explain 6755 shows owner, group and others access plus enabled SUID and SGID bits" width="640"/>
+  <img src="assets/demo-explain.svg" alt="Terminal: perm --explain 6755 shows owner, group and others access plus enabled SUID and SGID bits" width="720"/>
 </p>
 
 <p align="center">
-  <img src="assets/demo-why.svg" alt="Terminal: perm --why nobody delete shows a path walk and a DENIED result because the parent directory lacks write permission" width="640"/>
+  <img src="assets/demo-why.svg" alt="Terminal: perm --why nobody delete shows a path walk and a DENIED result because the parent directory lacks write permission" width="720"/>
 </p>
 
 <p align="center">
-  <img src="assets/demo-drift.svg" alt="Terminal: perm --scan --check lists NEW, OK, CHANGED and DELETED files and exits with code 1" width="640"/>
+  <img src="assets/demo-drift.svg" alt="Terminal: perm --scan --check lists NEW, OK, CHANGED and DELETED files and exits with code 1" width="720"/>
 </p>
 
 <p align="center"><img src="assets/header-exit.svg" alt="Exit Codes" width="520"/></p>
 
 <p align="center">
-  <img src="assets/exit-codes.svg" alt="Exit codes: 0 success or no change, 1 differences found or access denied, 2 error or invalid usage" width="720"/>
+  <img src="assets/exit-codes.svg" alt="Exit codes: 0 success or no change, 1 differences found or access denied, 2 error or invalid usage" width="780"/>
 </p>
 
 <p align="center">Set <code>NO_COLOR=1</code> to disable colored output. Colors are also off when output is not a terminal.</p>
