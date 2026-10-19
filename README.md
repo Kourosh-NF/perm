@@ -1,45 +1,41 @@
-# perm
+<div align="center">
 
-**A Bash CLI that explains Linux file permissions, detects permission drift, and tells you *why* a user can or cannot access a file.**
+<img src="assets/banner.svg" alt="perm — Permission and Metadata Analyzer, a Bash CLI for Linux" width="720"/>
 
-![Bash](https://img.shields.io/badge/Bash-4EAA25?style=flat-square&logo=gnubash&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black)
-![Version](https://img.shields.io/badge/version-3.4-58A6FF?style=flat-square)
+<p align="center">
+  <img src="assets/typing.svg" alt="What permissions does this file have? What changed since last time? Why can't user X access this file?" width="480"/>
+</p>
 
-`perm` answers three questions:
+<p align="center">
+  <img src="https://img.shields.io/badge/Bash-4EAA25?style=flat-square&logo=gnubash&logoColor=white" alt="Bash"/>
+  <img src="https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black" alt="Linux"/>
+  <img src="https://img.shields.io/badge/version-3.4-58A6FF?style=flat-square" alt="Version 3.4"/>
+  <img src="https://img.shields.io/badge/dependencies-none-3FB950?style=flat-square" alt="No dependencies"/>
+</p>
 
-1. **What permissions does this file have?**
-2. **What changed since last time?**
-3. **Why can't user X access this file?**
+<p align="center">
+A Bash CLI that <b>explains Linux file permissions</b>, <b>detects permission drift</b>,<br/>
+and tells you <b>why</b> a user can or cannot access a file.<br/>
+One script. No dependencies beyond standard GNU/Linux tools. Targets Ubuntu/Linux.
+</p>
 
-It is a single Bash script with no dependencies beyond standard GNU/Linux tools. It targets Ubuntu/Linux.
+</div>
 
----
+<p align="center"><img src="assets/divider.svg" alt="" width="720"/></p>
 
-## Features
+<p align="center"><img src="assets/header-questions.svg" alt="What it answers" width="520"/></p>
 
-**Analysis and explanation**
-- Shows mode, owner, group and special bits (SUID, SGID, sticky) separately
-- `--security` and `--report` give security-focused and structured reports
-- `--explain 6755` turns an octal value into plain language
-- `--json` output for scripting
+<p align="center">
+  <img src="assets/questions.svg" alt="perm answers three questions: what permissions a file has, what changed since last time, and why a user cannot access a file" width="720"/>
+</p>
 
-**Comparison**
-- `--compare` compares two files by permissions, ownership and special bits
+<p align="center"><img src="assets/header-features.svg" alt="Features" width="520"/></p>
 
-**Drift detection (baselines)**
-- `--baseline` saves the current state of a file, `--check` compares against it later
-- `--strict` also records a SHA-256 hash of the file content
-- `--scan` / `--scan --recursive` do the same for every file in a directory (symlinks are never followed, mount points are never crossed)
-- Results: `[OK]` `[CHANGED]` `[NEW]` `[DELETED]` `[INVALID]` `[ERROR]` `[SKIP]`
+<p align="center">
+  <img src="assets/features.svg" alt="Features: analysis and explanation, comparison, drift detection with baselines, and effective access analysis with --why" width="720"/>
+</p>
 
-**Effective access (`--why`)**
-- Explains whether a user can `read`, `write`, `execute` or `delete` a path, step by step
-- Follows kernel rules: `x` on every directory in the path, symlinks, first matching class only (owner, then group, then others), sticky bit, and `ro` / `noexec` mount options
-
----
-
-## Installation
+<p align="center"><img src="assets/header-install.svg" alt="Installation" width="520"/></p>
 
 ```bash
 git clone https://github.com/Kourosh-NF/perm.git
@@ -54,12 +50,11 @@ Optional: install it system-wide.
 sudo install -m 755 perm /usr/local/bin/perm
 ```
 
----
-
-## Usage
+<p align="center"><img src="assets/header-usage.svg" alt="Usage" width="520"/></p>
 
 ```text
 perm [OPTIONS] PATH
+perm --quiet PATH
 perm --compare [OPTIONS] FILE1 FILE2
 perm --explain VALUE
 perm --baseline [--force] [--strict] PATH
@@ -71,82 +66,74 @@ perm --remove PATH
 perm --why [--json] USER ACTION PATH
 ```
 
-### Examples
+**Analyze and explain**
 
 ```bash
-# Analyze a file
 perm /etc/passwd
 perm --security /etc/passwd
 perm --report /etc/passwd
+perm --quiet /etc/passwd          # permission string only
+perm --json /etc/passwd
 
-# Explain a numeric mode
 perm --explain 755
 perm --explain 6755
+```
 
-# Compare two files
+**Compare two files**
+
+```bash
 perm --compare file1 file2
+perm --compare --permissions file1 file2
 perm --compare --special file1 file2
+perm --compare --diff file1 file2   # only the real differences
+```
 
-# Detect changes with a baseline
+**Detect drift with baselines**
+
+```bash
 perm --baseline /usr/bin/sudo
 perm --check /usr/bin/sudo
 perm --baseline --strict /usr/bin/sudo     # also track content (SHA-256)
 
-# Scan a directory
 perm --scan --recursive /etc
 perm --scan --recursive --check --changes-only /etc
 
-# Why can (or can't) a user access a file?
+perm --list
+perm --remove /usr/bin/sudo
+```
+
+**Why can (or can't) a user access a file?**
+
+```bash
 perm --why bob read /srv/app/data.txt
 perm --why www-data execute /usr/local/bin/tool
 perm --why alice delete /tmp/report.txt
+perm --why 1001 w /var/www/index.html      # numeric UID and short action work too
 ```
 
-### Sample output
+<p align="center"><img src="assets/header-output.svg" alt="Sample Output" width="520"/></p>
 
-`perm --explain 6755`
+<p align="center">
+  <img src="assets/demo-explain.svg" alt="Terminal: perm --explain 6755 shows owner, group and others access plus enabled SUID and SGID bits" width="640"/>
+</p>
 
-```text
-Permission: 6755
-Symbolic : -rwsr-sr-x
+<p align="center">
+  <img src="assets/demo-why.svg" alt="Terminal: perm --why nobody delete shows a path walk and a DENIED result because the parent directory lacks write permission" width="640"/>
+</p>
 
-Owner:
-  Read    : YES
-  Write   : YES
-  Execute : YES
-...
-Special Bits:
-  SUID    : ENABLED
-  SGID    : ENABLED
-  Sticky  : disabled
-```
+<p align="center">
+  <img src="assets/demo-drift.svg" alt="Terminal: perm --scan --check lists NEW, OK, CHANGED and DELETED files and exits with code 1" width="640"/>
+</p>
 
-`perm --why root read /etc/hostname`
+<p align="center"><img src="assets/header-exit.svg" alt="Exit Codes" width="520"/></p>
 
-```text
-Path Walk (search permission x is needed on every directory)
-  [OK]      dir    /
-  [OK]      dir    /etc
-  [OK]      target /etc/hostname
+<p align="center">
+  <img src="assets/exit-codes.svg" alt="Exit codes: 0 success or no change, 1 differences found or access denied, 2 error or invalid usage" width="720"/>
+</p>
 
-Result: ALLOWED
-```
+<p align="center">Set <code>NO_COLOR=1</code> to disable colored output. Colors are also off when output is not a terminal.</p>
 
----
-
-## Exit codes
-
-| Code | Meaning |
-|------|---------|
-| `0`  | No differences / no change / success (`--why`: access allowed) |
-| `1`  | Differences or change detected (`--why`: access denied) |
-| `2`  | Error or invalid usage (including: no baseline exists) |
-
-Set `NO_COLOR=1` to disable colored output.
-
----
-
-## Limitations
+<p align="center"><img src="assets/header-limits.svg" alt="Limitations" width="520"/></p>
 
 - ACLs are detected (a warning is shown) but **not** evaluated
 - SELinux/AppArmor, Linux capabilities and `chattr +i` are not considered
@@ -154,9 +141,22 @@ Set `NO_COLOR=1` to disable colored output.
 - Baselines are stored in `${XDG_DATA_HOME:-~/.local/share}/perm/baselines/`
 - `perm` is a lightweight metadata checker, **not** a replacement for AIDE, Tripwire or SELinux tooling
 
----
+<p align="center"><img src="assets/header-author.svg" alt="Author" width="520"/></p>
 
-## Author
+<p align="center">Made by <a href="https://github.com/Kourosh-NF">Kourosh</a>, an IT student learning Linux, networking and infrastructure.</p>
 
-Made by [Kourosh](https://github.com/Kourosh-NF), a student learning Linux, networking and infrastructure.
-Email: kouroshnf87@gmail.com · Telegram: [@albernfnx](https://t.me/albernfnx)
+<p align="center">
+  <a href="mailto:kouroshnf87@gmail.com"><img src="assets/contact-email.svg" alt="Email: kouroshnf87@gmail.com" width="520"/></a>
+</p>
+
+<p align="center">
+  <a href="https://t.me/albernfnx"><img src="assets/contact-telegram.svg" alt="Telegram: @albernfnx" width="520"/></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/Kourosh-NF"><img src="assets/contact-github.svg" alt="GitHub: Kourosh-NF" width="520"/></a>
+</p>
+
+<p align="center">
+  <img src="assets/footer.svg" alt="Thanks for visiting perm!" width="480"/>
+</p>
